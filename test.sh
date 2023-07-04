@@ -21,22 +21,25 @@ TORPROXY=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{
 # start aws and pass tor proxy address
 aws-cli/build.sh
 # docker run --rm --name proxychains-aws-cli -e TORPROXY=$TORPROXY -v "$HOME/.aws":"/root/.aws" proxychains-aws-cli aws sts get-caller-identity
+# docker run --rm --name proxychains-aws-cli -e TORPROXY=$TORPROXY proxychains-aws-cli
 
 # glcoud
 # https://github.com/google-github-actions/auth
-gcloud-cli/build.sh
-# docker run -e TORPROXY=ip_address_of_torproxy -e GOOGLE_APPLICATION_CREDENTIALS=/path/to/creds.json -v /local/path/to/creds.json:/path/to/creds.json gcloud-tor command
+gcp-cli/build.sh
+# docker run --rm --name proxychains-gcp-cli -e TORPROXY=$TORPROXY proxychains-gcp-cli
 
 # azure
 # create azure creds: https://github.com/marketplace/actions/azure-cli-action
 azure-cli/build.sh
-# docker run -e TORPROXY=ip_address_of_torproxy -e GOOGLE_APPLICATION_CREDENTIALS=/path/to/creds.json -v /local/path/to/creds.json:/path/to/creds.json gcloud-tor command
+# docker run --rm --name proxychains-azure-cli -e TORPROXY=$TORPROXY proxychains-azure-cli
 
 # scoutsuite-aws
 scoutsuite-aws/build.sh
+# docker run --rm --name proxychains-scoutsuite-aws -e TORPROXY=$TORPROXY proxychains-scoutsuite-aws
 
 # scoutsuite-azure
 scoutsuite-azure/build.sh
+# docker run --rm --name proxychains-scoutsuite-azure -e TORPROXY=$TORPROXY proxychains-scoutsuite-azure 
 
 # scoutsuite-gcloud
 scoutsuite-gcloud/build.sh
