@@ -38,6 +38,9 @@ jobs:
           - context: hydra
             dockerfile: ./hydra/Dockerfile
             image: ghcr.io/credibleforce/proxychains-hydra
+          - context: nmap
+            dockerfile: ./nmap/Dockerfile
+            image: ghcr.io/credibleforce/proxychains-nmap
           - context: scoutsuite-aws
             dockerfile: ./scoutsuite-aws/Dockerfile
             image: ghcr.io/credibleforce/proxychains-scoutsuite-aws

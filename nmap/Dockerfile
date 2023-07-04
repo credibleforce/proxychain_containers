@@ -33,14 +33,10 @@ RUN apt-get update -qq \
     curl
 COPY entrypoint.sh /entrypoint.sh
 
-# install python 3.10
-RUN apt-get update -qq \
-    && apt-get install -y --no-install-recommends \
-    python3 \
-    python3-pip
+# nmap
+RUN apt-get update && apt-get install -y \
+	nmap \
+	--no-install-recommends
 
-COPY requirements.txt /requirements.txt
-
-RUN python3 -m pip install -r /requirements.txt
-
+# entry point
 ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
