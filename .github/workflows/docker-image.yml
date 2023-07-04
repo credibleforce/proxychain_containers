@@ -1,0 +1,48 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the aws-cli Docker image
+      run: docker build $build_dir --file Dockerfile --tag proxychains-$build_dir:$(date +%s)
+      env:
+          build_dir: aws-cli
+    - name: Build the azure-cli Docker image
+      run: docker build $build_dir --file Dockerfile --tag proxychains-$build_dir:$(date +%s)
+      env:
+          build_dir: azure-cli
+    - name: Build the gcp-cli Docker image
+      run: docker build $build_dir --file Dockerfile --tag proxychains-$build_dir:$(date +%s)
+      env:
+          build_dir: gcp-cli
+    - name: Build the hydra Docker image
+      run: docker build $build_dir --file Dockerfile --tag proxychains-$build_dir:$(date +%s)
+      env:
+          build_dir: hydra
+    - name: Build the python Docker image
+      run: docker build $build_dir --file Dockerfile --tag proxychains-$build_dir:$(date +%s)
+      env:
+          build_dir: python
+    - name: Build the scoutsuite-aws Docker image
+      run: docker build $build_dir --file Dockerfile --tag proxychains-$build_dir:$(date +%s)
+      env:
+          build_dir: scoutsuite-aws
+    - name: Build the scoutsuite-gcp Docker image
+      run: docker build $build_dir --file Dockerfile --tag proxychains-$build_dir:$(date +%s)
+      env:
+          build_dir: scoutsuite-gcp
+    - name: Build the scoutsuite-azure Docker image
+      run: docker build $build_dir --file Dockerfile --tag proxychains-$build_dir:$(date +%s)
+      env:
+          build_dir: scoutsuite-azure
