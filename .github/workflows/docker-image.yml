@@ -13,7 +13,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: proxychains
 
 jobs:
 
@@ -26,28 +25,28 @@ jobs:
         include:
           - context: aws-cli
             dockerfile: ./src/aws-cli/Dockerfile
-            image: ghcr.io/credibleforce/$IMAGE_NAME-aws-cli
+            image: ghcr.io/credibleforce/proxychains-aws-cli
           - context: azure-cli
             dockerfile: ./src/azure-cli/Dockerfile
-            image: ghcr.io/credibleforce/$IMAGE_NAME-azure-cli
+            image: ghcr.io/credibleforce/proxychains-azure-cli
           - context: gcp-cli
             dockerfile: ./src/gcp-cli/Dockerfile
-            image: ghcr.io/credibleforce/$IMAGE_NAME-gcp-cli
+            image: ghcr.io/credibleforce/proxychains-gcp-cli
           - context: python
             dockerfile: ./src/python/Dockerfile
-            image: ghcr.io/credibleforce/$IMAGE_NAME-python
+            image: ghcr.io/credibleforce/proxychains-python
           - context: hydra
             dockerfile: ./src/hydra/Dockerfile
-            image: ghcr.io/credibleforce/$IMAGE_NAME-hydra
+            image: ghcr.io/credibleforce/proxychains-hydra
           - context: scoutsuite-aws
             dockerfile: ./src/scoutsuite-aws/Dockerfile
-            image: ghcr.io/credibleforce/$IMAGE_NAME-scoutsuite-aws
+            image: ghcr.io/credibleforce/proxychains-scoutsuite-aws
           - context: scoutsuite-azure
             dockerfile: ./src/scoutsuite-azure/Dockerfile
-            image: ghcr.io/credibleforce/$IMAGE_NAME-scoutsuite-azure
+            image: ghcr.io/credibleforce/proxychains-scoutsuite-azure
           - context: scoutsuite-gcp
             dockerfile: ./src/scoutsuite-gcp/Dockerfile
-            image: ghcr.io/credibleforce/$IMAGE_NAME-scoutsuite-gcp
+            image: ghcr.io/credibleforce/proxychains-scoutsuite-gcp
     permissions:
       contents: read
       packages: write
