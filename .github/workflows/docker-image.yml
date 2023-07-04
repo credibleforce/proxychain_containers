@@ -24,28 +24,28 @@ jobs:
       matrix:
         include:
           - context: aws-cli
-            dockerfile: ./src/aws-cli/Dockerfile
+            dockerfile: ./aws-cli/Dockerfile
             image: ghcr.io/credibleforce/proxychains-aws-cli
           - context: azure-cli
-            dockerfile: ./src/azure-cli/Dockerfile
+            dockerfile: ./azure-cli/Dockerfile
             image: ghcr.io/credibleforce/proxychains-azure-cli
           - context: gcp-cli
-            dockerfile: ./src/gcp-cli/Dockerfile
+            dockerfile: ./gcp-cli/Dockerfile
             image: ghcr.io/credibleforce/proxychains-gcp-cli
           - context: python
-            dockerfile: ./src/python/Dockerfile
+            dockerfile: ./python/Dockerfile
             image: ghcr.io/credibleforce/proxychains-python
           - context: hydra
-            dockerfile: ./src/hydra/Dockerfile
+            dockerfile: ./hydra/Dockerfile
             image: ghcr.io/credibleforce/proxychains-hydra
           - context: scoutsuite-aws
-            dockerfile: ./src/scoutsuite-aws/Dockerfile
+            dockerfile: ./scoutsuite-aws/Dockerfile
             image: ghcr.io/credibleforce/proxychains-scoutsuite-aws
           - context: scoutsuite-azure
-            dockerfile: ./src/scoutsuite-azure/Dockerfile
+            dockerfile: ./scoutsuite-azure/Dockerfile
             image: ghcr.io/credibleforce/proxychains-scoutsuite-azure
           - context: scoutsuite-gcp
-            dockerfile: ./src/scoutsuite-gcp/Dockerfile
+            dockerfile: ./scoutsuite-gcp/Dockerfile
             image: ghcr.io/credibleforce/proxychains-scoutsuite-gcp
     permissions:
       contents: read
