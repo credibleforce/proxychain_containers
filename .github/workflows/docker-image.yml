@@ -1,48 +1,79 @@
 name: Docker Image CI
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches:
+      - 'main'
+    tags:
+      - 'v*'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - 'main'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: proxychains
 
 jobs:
 
-  build:
+  build-and-push-image:
 
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - context: aws-cli
+            dockerfile: ./src/aws-cli/Dockerfile
+            image: ghcr.io/credibleforce/$IMAGE_NAME-aws-cli
+          - context: azure-cli
+            dockerfile: ./src/azure-cli/Dockerfile
+            image: ghcr.io/credibleforce/$IMAGE_NAME-azure-cli
+          - context: gcp-cli
+            dockerfile: ./src/gcp-cli/Dockerfile
+            image: ghcr.io/credibleforce/$IMAGE_NAME-gcp-cli
+          - context: python
+            dockerfile: ./src/python/Dockerfile
+            image: ghcr.io/credibleforce/$IMAGE_NAME-python
+          - context: hydra
+            dockerfile: ./src/hydra/Dockerfile
+            image: ghcr.io/credibleforce/$IMAGE_NAME-hydra
+          - context: scoutsuite-aws
+            dockerfile: ./src/scoutsuite-aws/Dockerfile
+            image: ghcr.io/credibleforce/$IMAGE_NAME-scoutsuite-aws
+          - context: scoutsuite-azure
+            dockerfile: ./src/scoutsuite-azure/Dockerfile
+            image: ghcr.io/credibleforce/$IMAGE_NAME-scoutsuite-azure
+          - context: scoutsuite-gcp
+            dockerfile: ./src/scoutsuite-gcp/Dockerfile
+            image: ghcr.io/credibleforce/$IMAGE_NAME-scoutsuite-gcp
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the aws-cli Docker image
-      run: docker build --file $build_dir/Dockerfile --tag proxychains-$build_dir:$(date +%s) $build_dir
-      env:
-          build_dir: aws-cli
-    - name: Build the azure-cli Docker image
-      run: docker build --file $build_dir/Dockerfile --tag proxychains-$build_dir:$(date +%s) $build_dir
-      env:
-          build_dir: azure-cli
-    - name: Build the gcp-cli Docker image
-      run: docker build --file $build_dir/Dockerfile --tag proxychains-$build_dir:$(date +%s) $build_dir
-      env:
-          build_dir: gcp-cli
-    - name: Build the hydra Docker image
-      run: docker build --file $build_dir/Dockerfile --tag proxychains-$build_dir:$(date +%s) $build_dir
-      env:
-          build_dir: hydra
-    - name: Build the python Docker image
-      run: docker build --file $build_dir/Dockerfile --tag proxychains-$build_dir:$(date +%s) $build_dir
-      env:
-          build_dir: python
-    - name: Build the scoutsuite-aws Docker image
-      run: docker build --file $build_dir/Dockerfile --tag proxychains-$build_dir:$(date +%s) $build_dir
-      env:
-          build_dir: scoutsuite-aws
-    - name: Build the scoutsuite-gcp Docker image
-      run: docker build --file $build_dir/Dockerfile --tag proxychains-$build_dir:$(date +%s) $build_dir
-      env:
-          build_dir: scoutsuite-gcp
-    - name: Build the scoutsuite-azure Docker image
-      run: docker build --file $build_dir/Dockerfile --tag proxychains-$build_dir:$(date +%s) $build_dir
-      env:
-          build_dir: scoutsuite-azure
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ matrix.image }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
